@@ -1,0 +1,119 @@
+<html>
+<head><title>Activities Monitoring</title>
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css"/>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" type="text/css" rel="stylesheet"/>
+    <style>.red {
+    color: red;
+}
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row"><h1>Activity <span class="red">visualization</span></h1>
+        <form id="config-form">
+            <div class="row">
+                <div class="columns six"><label>User</label><input class="u-full-width" id="user-id" type="text"/></div>
+                <div class="columns six"><label>Acitivity</label><input class="u-full-width" id="activity-type"
+                                                                        type="number"/></div>
+            </div>
+            <button class="button-primary" id="visualize-btn">Visualize</button>
+        </form>
+    </div>
+    <div class="row">
+        <div id="chart-container" style="width: 100%; height: 400px;"></div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">function convertToHighchartData(monitoringData) {
+    return monitoringData.map(function(dataPoint) {
+        return [dataPoint.Hour, dataPoint.TotalCount];
+    });
+}
+
+function renderChart(name, highchartData) { 
+    Highcharts.chart('chart-container', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Steps per hour'
+        },
+        xAxis: {
+            title: {
+                text: 'Hour'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Number of Steps'
+            }
+        },
+        series: [{
+            name: name,
+            data: highchartData
+        }]
+    });
+    console.log("chart rendered");
+}
+function getDataAndRender(userId, activityType) {
+    // post back to server and get data
+    $.post('/app/monitoring', {
+        userId: userId,
+        type: activityType
+    }, function(data, textStatus, xhr) {
+        if (textStatus !== 'success') {
+            throw new Error('Failed to request for chart data');
+        }
+
+        var chartData = convertToHighchartData(data);
+        renderChart(userId, chartData);
+    });
+}
+
+// jquery elements
+var $visualizeBtn = $('#visualize-btn'),
+    $userId = $('#user-id'),
+    $activityType = $('#activity-type');
+
+$visualizeBtn.click(function(event) {
+    var userId = $userId.val();
+    var activityType = $activityType.val();
+
+    // post back to server and get data
+    getDataAndRender(userId, activityType);
+
+    // render chart after receiving data
+    // block form submission
+    event.preventDefault();
+});
+
+
+
+// socketjs client
+var stompClient = null;
+function connect() {
+    var socket = new SockJS('/qalx-websocket');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        // setConnected(true);
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/alerts', function (alertMessage) {
+            console.log(JSON.parse(alertMessage.body));
+        });
+    });
+}
+
+function disconnect() {
+    if (stompClient !== null) {
+        stompClient.disconnect();
+    }
+    // setConnected(false);
+    console.log("Disconnected");
+}
+connect();
+</script>
+</body>
+</html>

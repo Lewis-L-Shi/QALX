@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Wait...</title>
+</head>
+<body>
+    <script sec:authorize="hasRole('Doctor')">
+        var view = "doctor";
+    </script>
+    <script sec:authorize="hasRole('Researcher')">
+        var view = "researcher";
+    </script>
+    <script>
+        console.log(view);
+        window.location = "/" + view;
+    </script>
+</body>
+</html>

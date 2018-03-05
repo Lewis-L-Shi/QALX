@@ -1,5 +1,6 @@
-<html>
-<head><title>Activities Monitoring</title>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Activities Monitoring</title>
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css"/>
     <link href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" type="text/css" rel="stylesheet"/>
     <style>.red {
@@ -9,6 +10,9 @@
 </head>
 <body>
 <div class="container">
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
     <div class="row"><h1>Activity <span class="red">visualization</span></h1>
         <form id="config-form">
             <div class="row">

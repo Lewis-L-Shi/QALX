@@ -4,55 +4,56 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="ActivityLog")
+//@Table(name="activitylog")
 public class ActivityLog {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer UserId;
-    private Date DateTime;
-    private Integer ActivityType;
-    private String Log;
+    private Long id;
+    private Integer userId;
+    private Date dateTime;
+    private Integer type;
+    private String log;
 
     public ActivityLog(){}
 
     public ActivityLog(Integer id, Integer type, String log) {
-        UserId = id;
-        DateTime = new Date();
-        ActivityType = type;
-        Log = log;
+        this.userId = id;
+        this.dateTime = new Date();
+        this.type = type;
+        this.log = log;
     }
 
 
     public Integer getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(Integer userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public Date getDateTime() {
-        return DateTime;
+        return dateTime;
     }
 
     public void setDateTime(Date dateTime) {
-        DateTime = dateTime;
+        this.dateTime = dateTime;
     }
 
-    public Integer getActivityType() {
-        return ActivityType;
+    public Integer getType() {
+        return type;
     }
 
-    public void setActivityType(Integer activityType) {
-        ActivityType = activityType;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public String getLog() {
-        return Log;
+        return log;
     }
 
     public void setLog(String log) {
-        Log = log;
+        this.log = log;
     }
 }

@@ -16,14 +16,25 @@ public interface LogRepository extends JpaRepository<ActivityLog, Long> {
     @Query("select s from ActivityLog s where s.userId = ?1 and s.type = ?2")
     List<ActivityLog> findByUserIdAndType(Integer userId, Integer type);
 
-//    @Query("select temp.Hour as hour, SUM(temp.Count) as totalCount from" +
-//            " (select FUNC('HOUR', s.dateTime) as Hour, CAST(s.log UNSIGNED) as Count from ActivityLog s" +
-//            " where s.userId = ?1 and s.type = ?2 and date(s.dateTime) = ?3) as temp" +
-//            " GROUP BY temp.Hour")
+    /**
+     * Return ActivityLog records for specific user, specific type and date.
+     * @param userId
+     * @param type
+     * @param date
+     * @return
+     */
     @Query("select s from ActivityLog s" +
             " where s.userId = ?1 and s.type = ?2 and date(s.dateTime) = ?3")
     List<ActivityLog> findByUserIdAndTypeAndDate(Integer userId, Integer type, Date date);
 
+    /**
+     * Method to convert List of ActivityLog into List of HighchartActivityLogSeries.
+     * (default provide method implementation in interface class, only allowed since Java 8)
+     * @param userId user ID
+     * @param type activity type
+     * @param date specific date
+     * @return List of HighchartActivityLogSeries
+     */
     default List<HighchartActivityLogSeries> getLog(int userId, int type, Date date) {
         List<ActivityLog> logs = this.findByUserIdAndTypeAndDate(userId, type, date);
         final Map<Integer, Integer> hourMap = new HashMap<Integer, Integer>();

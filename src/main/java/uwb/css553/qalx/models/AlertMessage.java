@@ -1,5 +1,9 @@
 package uwb.css553.qalx.models;
 
+/**
+ * This class is the message payload for notification service.
+ * @author Trang Quang
+ */
 public class AlertMessage {
     private int code;
 

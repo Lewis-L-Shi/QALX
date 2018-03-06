@@ -12,6 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Controller to provide access to ActivityLog entity
+ */
 @Controller
 @RequestMapping(path="/log")
 public class LogController {

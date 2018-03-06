@@ -7,11 +7,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+/**
+ * This class is used to customize Spring Security configuration.
+ * @author Trang Quang
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
+    /**
+     * Configure page access for authenticated users based on user's role
+     * @param http HttpSecurity
+     * @throws Exception default
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -35,6 +43,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated();
     }
 
+    /**
+     * Create user, password and role.
+     * @param auth AuthenticationManagerBuilder
+     * @throws Exception default
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()

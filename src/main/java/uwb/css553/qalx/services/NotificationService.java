@@ -7,7 +7,7 @@ import uwb.css553.qalx.models.AlertMessage;
 
 /**
  * This service is responsible for pushing messages using WebSocket.
- * @author: Trang Quang
+ * @author Trang Quang
  */
 @Service
 public class NotificationService {

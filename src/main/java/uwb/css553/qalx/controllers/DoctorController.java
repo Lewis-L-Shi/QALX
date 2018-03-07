@@ -4,11 +4,16 @@ package uwb.css553.qalx.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 //import org.springframework.ui.Model;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uwb.css553.qalx.models.Doctor;
 import uwb.css553.qalx.models.Patient;
 import uwb.css553.qalx.repositories.DoctorRepository;
+<<<<<<< HEAD
 import uwb.css553.qalx.repositories.PatientRepository;
+=======
+import uwb.css553.qalx.services.PatientService;
+>>>>>>> Correct patient - patient info relationship and add service
 
 
 import javax.persistence.*;
@@ -20,7 +25,7 @@ public class DoctorController {
     private DoctorRepository doctorRepository;
 
     @Autowired
-    private PatientRepository patientRepository;
+    private PatientService patientService;
 
     @RequestMapping(method= RequestMethod.POST)
     public @ResponseBody String addNewDoctor (@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email, @RequestParam String organization, @RequestParam String speciality) {
@@ -92,5 +97,11 @@ public class DoctorController {
         return doc.getPatients();
     }
 
+
+    @RequestMapping(value="/patient")
+    public String studentDetail(Model model) {
+        model.addAttribute("patient", patientService.getPatients(1L));
+        return "monitor";
+    }
 
 }

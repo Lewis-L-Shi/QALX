@@ -18,9 +18,8 @@ public class Patient {
     private Date birthDate;
 
     // one-to-one mapping to profile
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "patient")
+    @OneToOne(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "pinfo_id", nullable = false)
     private PatientInfo patientInfo;
 
     @ManyToMany(fetch = FetchType.LAZY,

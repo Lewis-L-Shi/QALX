@@ -4,9 +4,11 @@ package uwb.css553.qalx.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 //import org.springframework.ui.Model;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uwb.css553.qalx.models.Doctor;
 import uwb.css553.qalx.repositories.DoctorRepository;
+import uwb.css553.qalx.services.PatientService;
 
 
 import javax.persistence.*;
@@ -16,6 +18,9 @@ import javax.persistence.*;
 public class DoctorController {
     @Autowired
     private DoctorRepository doctorRepository;
+
+    @Autowired
+    private PatientService patientService;
 
     @RequestMapping(method= RequestMethod.POST)
     public @ResponseBody
@@ -44,5 +49,11 @@ public class DoctorController {
 //        return doctorRepository.findById(id);
     }
 
+
+    @RequestMapping(value="/patient")
+    public String studentDetail(Model model) {
+        model.addAttribute("patient", patientService.getPatients(1L));
+        return "monitor";
+    }
 
 }

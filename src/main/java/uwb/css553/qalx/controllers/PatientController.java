@@ -49,6 +49,16 @@ public class PatientController {
         return patientRepository.findAll();
     }
 
+    @GetMapping(path="/info")
+    public @ResponseBody List<PatientInfo> getPatientInfo() {
+        return patientInfoRepository.findAll();
+    }
+
+    @GetMapping(path="/info/{id}")
+    public @ResponseBody PatientInfo getPatientInfo(@PathVariable(value = "id") Long id) {
+        return patientInfoRepository.findOne(id);
+    }
+
     @GetMapping(path="/{id}")
     public @ResponseBody PatientInfo getPatientById(@PathVariable(value = "id") Long id) {
         return patientRepository.getOne(id).getPatientInfo();

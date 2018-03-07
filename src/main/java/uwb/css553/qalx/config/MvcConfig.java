@@ -20,7 +20,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         // this will map URLs to views (html) directly without controller
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/doctor").setViewName("doctor");
+//        registry.addViewController("/doctor").setViewName("doctor");  // let DoctorController handle
         registry.addViewController("/researcher").setViewName("researcher");
     }
 }

@@ -9,17 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import uwb.css553.qalx.models.Doctor;
 import uwb.css553.qalx.models.Patient;
 import uwb.css553.qalx.repositories.DoctorRepository;
-<<<<<<< HEAD
 import uwb.css553.qalx.repositories.PatientRepository;
-=======
 import uwb.css553.qalx.services.PatientService;
->>>>>>> Correct patient - patient info relationship and add service
 
 
 import javax.persistence.*;
 
 @Controller
-@RequestMapping(path="/doctors")
 public class DoctorController {
     @Autowired
     private DoctorRepository doctorRepository;
@@ -27,8 +23,13 @@ public class DoctorController {
     @Autowired
     private PatientService patientService;
 
-    @RequestMapping(method= RequestMethod.POST)
-    public @ResponseBody String addNewDoctor (@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email, @RequestParam String organization, @RequestParam String speciality) {
+    // TODO: move into patientService
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @RequestMapping(path="/doctors", method= RequestMethod.POST)
+    public @ResponseBody
+    String addNewDoctor (@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email, @RequestParam String organization, @RequestParam String speciality) {
         Doctor doc = new Doctor();
         doc.setFirstName(firstName);
         doc.setLastName(lastName);
@@ -40,16 +41,16 @@ public class DoctorController {
         return "new doctor saved";
     }
 
-    @GetMapping
+    @GetMapping(path="/doctors")
     public @ResponseBody Iterable<Doctor> getAllDoctors() {
         //doctorRepository.findOne();
         return doctorRepository.findAll();
     }
 
-    @GetMapping(path="/{id}")
+
+    @GetMapping(path="/doctor/{id}")
     public @ResponseBody Doctor getDoctorById(@PathVariable long id){
         return doctorRepository.findOne(id);
-//        return doctorRepository.findById(id);
     }
 
     @RequestMapping(path = "/addPatient", method = RequestMethod.POST)
@@ -98,10 +99,15 @@ public class DoctorController {
     }
 
 
-    @RequestMapping(value="/patient")
-    public String studentDetail(Model model) {
-        model.addAttribute("patient", patientService.getPatients(1L));
-        return "monitor";
+    @RequestMapping(value="/doctor/patient")
+    public String getPatientHistory(Model model) {
+//        model.addAttribute("patient", patientService.getPatients(1L));
+        return "monitor"; //return view name
     }
 
+    @RequestMapping(value="/doctor")
+    public String getPatients(Model model) {
+        model.addAttribute("patients", patientService.getPatients(1L));
+        return "doctor";    //return view name
+    }
 }

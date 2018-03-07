@@ -66,7 +66,7 @@
 
     <div class="row">
         <h1 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]!</h1>
-        <p>Click <a href="/doctors/patient">here</a> for patient monitoring</p>
+        <p>Click <a href="/doctor/patient">here</a> for patient monitoring</p>
     </div>
     <div class="row" th:unless="${#lists.isEmpty(patients)}">
         <div class="twelve columns">
@@ -79,9 +79,9 @@
                 <div class="twelve columns">
                     <div class="five columns profile">&nbsp;</div>
                     <div class="seven columns">
-                        <h3><i class="fa fa-male"></i> <span th:text="${patient.patientInfo.firstName}"></span></h3>
-                        <p th:text="${patient.birthDate}"></p>
-                        <p>Lives in Everett, WA</p>
+                        <h3><i class="fa fa-male"></i> <span th:text="${patient.patientInfo.firstName} + ${patient.patientInfo.lastName}"></span></h3>
+                        <p th:text="${#dates.format(patient.birthDate, 'MM-dd-yyyy')}"></p>
+                        <p>Seattle, WA</p>
                     </div>
                 </div>
             </a>
@@ -98,8 +98,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
 <script type="text/javascript">
-var $notificationContainer = #('notification-container'),
-    notificationTemplate = #('notification-template').html();
+
+// jquery elements
+var $notificationContainer = $('#notification-container'),
+    notificationTemplate = $('#notification-template').html();
 
 function showNotification(message) {
     var content = notificationTemplate.replace('[[message]]', message);

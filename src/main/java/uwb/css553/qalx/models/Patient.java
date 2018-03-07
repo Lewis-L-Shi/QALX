@@ -31,7 +31,11 @@ public class Patient {
             mappedBy = "patients"
     )
     private Set<Doctor> docs = new HashSet<Doctor>();
-
+//
+//    @OneToMany(cascade = CascadeType.ALL,
+//                fetch = FetchType.LAZY,
+//                mappedBy = "patients")
+//    private Set<PillBoxRecord> pillBoxRecords = new HashSet<>();
 
 
     public Patient() {}

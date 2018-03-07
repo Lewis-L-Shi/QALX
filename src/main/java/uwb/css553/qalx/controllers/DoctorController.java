@@ -14,6 +14,7 @@ import uwb.css553.qalx.services.PatientService;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Controller
 public class DoctorController {
@@ -53,7 +54,7 @@ public class DoctorController {
         return doctorRepository.findOne(id);
     }
 
-    @RequestMapping(path = "/addPatient", method = RequestMethod.POST)
+    @RequestMapping(path = "/patient", method = RequestMethod.POST)
     public @ResponseBody String addDocPatRelationship(@RequestParam long docId, @RequestParam long pid){
 
         Patient myPatient = patientRepository.findOne(pid);
@@ -78,10 +79,6 @@ public class DoctorController {
         Patient myPatient = patientRepository.findOne(pid);
         Doctor myDoctor = doctorRepository.findOne(docId);
 
-        if(false){
-            return "DocID or Pid not exist";
-        }
-
         myPatient.getDocs().add(myDoctor);
         myDoctor.getPatients().add(myPatient);
 
@@ -91,8 +88,9 @@ public class DoctorController {
         return "Doc-pat relationship added.";
     }
 
-    @GetMapping(path="/{docId}/patients")
-    public @ResponseBody Iterable<Patient> getPatientsByDocId(@PathVariable long docId){
+    @GetMapping(path="/doctor/{docId}/patients")
+    public @ResponseBody
+    Iterable<Patient> getPatientsByDocId(@PathVariable long docId){
 
         Doctor doc = doctorRepository.findOne(docId);
         return doc.getPatients();
@@ -107,7 +105,10 @@ public class DoctorController {
 
     @RequestMapping(value="/doctor")
     public String getPatients(Model model) {
-        model.addAttribute("patients", patientService.getPatients(1L));
+        model.addAttribute("patients",
+                getPatientsByDocId(10002L) //hardcoded for test
+                //patientService.getPatients(1L)
+                );
         return "doctor";    //return view name
     }
 }

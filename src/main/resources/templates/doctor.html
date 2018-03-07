@@ -5,6 +5,7 @@
     <title>Patient Monitoring</title>
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css"/>
     <link href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" type="text/css" rel="stylesheet"/>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
     <style>
         .red {
             color: red;
@@ -41,7 +42,7 @@
         }
 
         .notification-container {
-            position: absolute;
+            position: fixed;
             right: 0;
             min-width: 300px;
             top: 15px;
@@ -79,7 +80,8 @@
                 <div class="twelve columns">
                     <div class="five columns profile">&nbsp;</div>
                     <div class="seven columns">
-                        <h3><i class="fa fa-male"></i> <span th:text="${patient.patientInfo.firstName} + ${patient.patientInfo.lastName}"></span></h3>
+                        <h3><i class="fa"
+                               th:classappend="${patient.patientInfo.gender}=='MALE' ? fa-male : fa-female"></i> <span th:text="${patient.patientInfo.firstName} + ' ' + ${patient.patientInfo.lastName}"></span></h3>
                         <p th:text="${#dates.format(patient.birthDate, 'MM-dd-yyyy')}"></p>
                         <p>Seattle, WA</p>
                     </div>

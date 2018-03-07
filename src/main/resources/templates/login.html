@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Login</title>
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css"/>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" type="text/css" rel="stylesheet"/>
+    <style>
+    .red {
+        color: red;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row"><h1>Welcome</h1>
+            <div class="row red" th:if="${param.error}">
+                Invalid username and password.
+            </div>
+            <div class="row" th:if="${param.logout}">
+                You have been logged out.
+            </div>
+            <form id="login-form" th:action="@{/login}" method="post">
+                <div class="row">
+                    <div class="columns six">
+                        <label>User Id</label>
+                        <input class="u-full-width" name="username" type="text"/>
+                    </div>
+                    <div class="columns six">
+                        <label>Password</label>
+                        <input class="u-full-width" name="password" type="password"/>
+                    </div>
+                </div>
+                <button class="button-primary" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -14,7 +14,7 @@ import uwb.css553.qalx.repositories.PatientRepository;
 import javax.persistence.*;
 
 @Controller
-@RequestMapping(path="/doctor")
+@RequestMapping(path="/doctors")
 public class DoctorController {
     @Autowired
     private DoctorRepository doctorRepository;

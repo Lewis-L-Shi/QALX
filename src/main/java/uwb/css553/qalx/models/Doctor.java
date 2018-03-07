@@ -1,5 +1,7 @@
 package uwb.css553.qalx.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +29,7 @@ public class Doctor {
                     CascadeType.MERGE
                     }
                 )
+    @JsonIgnore
     @JoinTable(name = "doctor_patients",
             joinColumns = {@JoinColumn(name = "doctor_id")},
             inverseJoinColumns = {@JoinColumn(name = "patient_id")}

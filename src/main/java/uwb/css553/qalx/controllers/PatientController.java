@@ -3,6 +3,7 @@ package uwb.css553.qalx.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import uwb.css553.qalx.models.Doctor;
 import uwb.css553.qalx.models.Patient;
 import uwb.css553.qalx.models.PatientInfo;
 import uwb.css553.qalx.repositories.PatientInfoRepository;
@@ -62,6 +63,13 @@ public class PatientController {
     @GetMapping(path="/{id}")
     public @ResponseBody PatientInfo getPatientById(@PathVariable(value = "id") Long id) {
         return patientRepository.getOne(id).getPatientInfo();
+    }
+
+    @GetMapping(path="/{pid}/doctors")
+    public @ResponseBody Iterable<Doctor> getDoctorsByPid(@PathVariable long pid){
+
+        Patient patient = patientRepository.findOne(pid);
+        return patient.getDocs();
     }
 
 }

@@ -25,7 +25,8 @@ public class PatientInfo implements Serializable{
     private String address;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "patientInfo")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pat_id", nullable = false)
     private Patient patient;
 
     public PatientInfo() {}

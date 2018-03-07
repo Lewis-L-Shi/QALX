@@ -1,10 +1,13 @@
 package uwb.css553.qalx.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
+@Table(name = "doctors")
 //@NamedQuery(name = "User.findById",
 //        query = "select doc from doctor doc where doc.id = ?1")
 public class Doctor {
@@ -18,6 +21,20 @@ public class Doctor {
     private String organization;
     private String speciality;
     private String status;
+
+
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+                    }
+                )
+    @JsonIgnore
+    @JoinTable(name = "doctor_patients",
+            joinColumns = {@JoinColumn(name = "doctor_id")},
+            inverseJoinColumns = {@JoinColumn(name = "patient_id")}
+            )
+    private Set<Patient> patients = new HashSet<Patient>();
 
     public long getId() {
         return id;
@@ -66,19 +83,6 @@ public class Doctor {
         this.status = status;
     }
 
-
-//
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE
-//            })
-//    @JoinTable(name = "doc_patient",
-//            joinColumns = { @JoinColumn(name = "id") },
-//            inverseJoinColumns = { @JoinColumn(name = "pid") })
-//    private Set<patient> patients = new HashSet<>();
-
-
     public Doctor() {
 
     }
@@ -93,4 +97,11 @@ public class Doctor {
         this.status = "in_service";
     }
 
+    public Set<Patient> getPatients() {
+        return patients;
+    }
+
+    public void setPatients(Set<Patient> patients) {
+        this.patients = patients;
+    }
 }

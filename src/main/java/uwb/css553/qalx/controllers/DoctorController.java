@@ -7,11 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uwb.css553.qalx.models.Doctor;
+import uwb.css553.qalx.models.Patient;
 import uwb.css553.qalx.repositories.DoctorRepository;
+import uwb.css553.qalx.repositories.PatientRepository;
 import uwb.css553.qalx.services.PatientService;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Controller
 public class DoctorController {
@@ -20,6 +23,10 @@ public class DoctorController {
 
     @Autowired
     private PatientService patientService;
+
+    // TODO: move into patientService
+    @Autowired
+    private PatientRepository patientRepository;
 
     @RequestMapping(path="/doctors", method= RequestMethod.POST)
     public @ResponseBody
@@ -45,7 +52,44 @@ public class DoctorController {
     @GetMapping(path="/doctor/{id}")
     public @ResponseBody Doctor getDoctorById(@PathVariable long id){
         return doctorRepository.findOne(id);
-//        return doctorRepository.findById(id);
+    }
+
+    @RequestMapping(path = "/patient", method = RequestMethod.POST)
+    public @ResponseBody String addDocPatRelationship(@RequestParam long docId, @RequestParam long pid){
+
+        Patient myPatient = patientRepository.findOne(pid);
+        Doctor myDoctor = doctorRepository.findOne(docId);
+
+        myPatient.getDocs().add(myDoctor);
+        myDoctor.getPatients().add(myPatient);
+
+        doctorRepository.save(myDoctor);
+        patientRepository.save(myPatient);
+
+        return "Doc-pat relationship added.";
+    }
+
+    @RequestMapping(path = "/{docId}/addPatient", method = RequestMethod.POST)
+    public @ResponseBody String addDocPatRelationship2(@PathVariable long docId, @RequestParam long pid){
+
+        Patient myPatient = patientRepository.findOne(pid);
+        Doctor myDoctor = doctorRepository.findOne(docId);
+
+        myPatient.getDocs().add(myDoctor);
+        myDoctor.getPatients().add(myPatient);
+
+        doctorRepository.save(myDoctor);
+        patientRepository.save(myPatient);
+
+        return "Doc-pat relationship added.";
+    }
+
+    @GetMapping(path="/doctor/{docId}/patients")
+    public @ResponseBody
+    Iterable<Patient> getPatientsByDocId(@PathVariable long docId){
+
+        Doctor doc = doctorRepository.findOne(docId);
+        return doc.getPatients();
     }
 
 
@@ -57,7 +101,10 @@ public class DoctorController {
 
     @RequestMapping(value="/doctor")
     public String getPatients(Model model) {
-        model.addAttribute("patients", patientService.getPatients(1L));
+        model.addAttribute("patients",
+                getPatientsByDocId(10002L) //hardcoded for test
+                //patientService.getPatients(1L)
+                );
         return "doctor";    //return view name
     }
 }

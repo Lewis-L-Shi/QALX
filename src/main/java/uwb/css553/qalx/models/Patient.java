@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="patients")
@@ -16,19 +18,20 @@ public class Patient {
     private Date birthDate;
 
     // one-to-one mapping to profile
-    @OneToOne(cascade =  CascadeType.ALL)
-    @JoinColumn(name = "pinfo_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL,
+            mappedBy = "patient")
     private PatientInfo patientInfo;
 
-//    @ManyToMany(fetch = FetchType.LAZY,
-//            cascade = {
-//                    CascadeType.PERSIST,
-//                    CascadeType.MERGE
-//            })
-//    @JoinTable(name = "patients_doctors",
-//            joinColumns = { @JoinColumn(name = "pat_id") },
-//            inverseJoinColumns = { @JoinColumn(name = "doc_id") })
-//    private Set<Doctor> tags = new HashSet<>();
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "patients"
+    )
+    private Set<Doctor> docs = new HashSet<Doctor>();
 
 
 
@@ -68,5 +71,13 @@ public class Patient {
 
     public void setPatientInfo(PatientInfo patientInfo) {
         this.patientInfo = patientInfo;
+    }
+
+    public Set<Doctor> getDocs() {
+        return docs;
+    }
+
+    public void setDocs(Set<Doctor> docs) {
+        this.docs = docs;
     }
 }

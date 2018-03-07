@@ -66,7 +66,26 @@ public class DoctorController {
         return "Doc-pat relationship added.";
     }
 
-    @GetMapping(path="/{docId}/getPatients")
+    @RequestMapping(path = "/{docId}/addPatient", method = RequestMethod.POST)
+    public @ResponseBody String addDocPatRelationship2(@PathVariable long docId, @RequestParam long pid){
+
+        Patient myPatient = patientRepository.findOne(pid);
+        Doctor myDoctor = doctorRepository.findOne(docId);
+
+        if(false){
+            return "DocID or Pid not exist";
+        }
+
+        myPatient.getDocs().add(myDoctor);
+        myDoctor.getPatients().add(myPatient);
+
+        doctorRepository.save(myDoctor);
+        patientRepository.save(myPatient);
+
+        return "Doc-pat relationship added.";
+    }
+
+    @GetMapping(path="/{docId}/patients")
     public @ResponseBody Iterable<Patient> getPatientsByDocId(@PathVariable long docId){
 
         Doctor doc = doctorRepository.findOne(docId);

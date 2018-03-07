@@ -1,5 +1,7 @@
 package uwb.css553.qalx.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -70,6 +72,7 @@ public class Patient {
         this.patientInfo = patientInfo;
     }
 
+    @JsonIgnore
     public Set<Doctor> getDocs() {
         return docs;
     }

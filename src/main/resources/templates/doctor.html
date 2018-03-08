@@ -76,7 +76,7 @@
     </div>
     <section class="patients" th:unless="${#lists.isEmpty(patients)}">
         <div class="row" th:each="patient: ${patients}">
-            <a th:href="@{'/pillBoxRecord/?pid=' + ${patient.id}}">
+            <a th:href="@{/pillBoxRecord/SinglePatientRecord/(id=${patient.id},fname=${patient.patientInfo.firstName},lname=${patient.patientInfo.lastName})}">
                 <div class="twelve columns">
                     <div class="five columns profile">&nbsp;</div>
                     <div class="seven columns">

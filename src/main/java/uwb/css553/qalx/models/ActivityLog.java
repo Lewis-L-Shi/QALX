@@ -3,8 +3,11 @@ package uwb.css553.qalx.models;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * This class is to model users' activity log.
+ * @author Trang Quang
+ */
 @Entity
-//@Table(name="activitylog")
 public class ActivityLog {
 
     @Id

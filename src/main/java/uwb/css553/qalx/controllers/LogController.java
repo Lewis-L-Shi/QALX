@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Controller to provide access to ActivityLog entity
+ * @author Trang Quang
  */
 @Controller
 @RequestMapping(path="/log")

@@ -92,13 +92,22 @@ public class DoctorController {
         return doc.getPatients();
     }
 
-
+    /**
+     * Map request to view "monitor" and model
+     * @param model Model
+     * @return view name
+     */
     @RequestMapping(value="/doctor/patient")
     public String getPatientHistory(Model model) {
 //        model.addAttribute("patient", patientService.getPatients(1L));
         return "monitor"; //return view name
     }
 
+    /**
+     * Map request to view "doctor" and model - list of patients
+     * @param model Model
+     * @return view name
+     */
     @RequestMapping(value="/doctor")
     public String getPatients(Model model) {
         model.addAttribute("patients",

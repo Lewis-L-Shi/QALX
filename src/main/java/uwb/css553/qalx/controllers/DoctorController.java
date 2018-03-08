@@ -60,10 +60,6 @@ public class DoctorController {
         Patient myPatient = patientRepository.findOne(pid);
         Doctor myDoctor = doctorRepository.findOne(docId);
 
-        if(false){
-            return "DocID or Pid not exist";
-        }
-
         myPatient.getDocs().add(myDoctor);
         myDoctor.getPatients().add(myPatient);
 

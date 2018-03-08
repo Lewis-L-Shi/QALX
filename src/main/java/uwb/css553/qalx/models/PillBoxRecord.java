@@ -26,9 +26,9 @@ public class PillBoxRecord {
     private Integer psid;
     private Integer status;
 
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = )
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id", nullable = false)
+    private Patient patient;
 
 
     public Integer getPrimaryKey() {return this.pid; }

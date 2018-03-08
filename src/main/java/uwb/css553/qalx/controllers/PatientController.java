@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import uwb.css553.qalx.models.Doctor;
 import uwb.css553.qalx.models.Patient;
 import uwb.css553.qalx.models.PatientInfo;
+import uwb.css553.qalx.models.PillBoxRecord;
 import uwb.css553.qalx.repositories.PatientInfoRepository;
 import uwb.css553.qalx.repositories.PatientRepository;
 
@@ -70,6 +71,12 @@ public class PatientController {
 
         Patient patient = patientRepository.findOne(pid);
         return patient.getDocs();
+    }
+
+    @GetMapping(path = "/{pid}/getPillBox")
+    public @ResponseBody Iterable<PillBoxRecord> getPillBoxByPid(@PathVariable long pid){
+        Patient patient = patientRepository.findOne(pid);
+        return patient.getPillBoxRecords();
     }
 
 }

@@ -66,7 +66,7 @@ public class PatientController {
         return patientRepository.getOne(id).getPatientInfo();
     }
 
-    @GetMapping(path="/{pid}/getDoctors")
+    @GetMapping(path="/{pid}/doctors")
     public @ResponseBody Iterable<Doctor> getDoctorsByPid(@PathVariable long pid){
 
         Patient patient = patientRepository.findOne(pid);

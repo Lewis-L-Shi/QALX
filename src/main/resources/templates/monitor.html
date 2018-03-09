@@ -1,5 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!--/* @author Trang Quang */-->
     <title>Activities Monitoring</title>
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css"/>
     <link href="//cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" type="text/css" rel="stylesheet"/>
@@ -121,7 +122,7 @@ function renderChart(name, highchartData) {
 function getDataAndRender(userId, type, date) {
     // post back to server and get data
     var requestEndpoint = [
-        'log',
+        '/log',
         userId,
         type + '?date=' + date
     ].join('/');

@@ -10,6 +10,10 @@ import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Provide additional queries to ActivityLog Table
+ * @author Trang Quang
+ */
 public interface LogRepository extends JpaRepository<ActivityLog, Long> {
 
     // Use Entity name, not table name in query definition
@@ -18,9 +22,9 @@ public interface LogRepository extends JpaRepository<ActivityLog, Long> {
 
     /**
      * Return ActivityLog records for specific user, specific type and date.
-     * @param userId
-     * @param type
-     * @param date
+     * @param userId Integer, e.g. 1234
+     * @param type Integer, e.g. 1
+     * @param date Date
      * @return
      */
     @Query("select s from ActivityLog s" +
@@ -29,6 +33,7 @@ public interface LogRepository extends JpaRepository<ActivityLog, Long> {
 
     /**
      * Method to convert List of ActivityLog into List of HighchartActivityLogSeries.
+     * aggregate Log data per hour for specific date, activity type and user.
      * (default provide method implementation in interface class, only allowed since Java 8)
      * @param userId user ID
      * @param type activity type

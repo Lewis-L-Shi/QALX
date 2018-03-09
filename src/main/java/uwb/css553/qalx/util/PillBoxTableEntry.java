@@ -1,5 +1,6 @@
 package uwb.css553.qalx.util;
 
+//Utility class for formatting Patient PillBox record tables.
 public class PillBoxTableEntry {
     private String psid;
     private String date;

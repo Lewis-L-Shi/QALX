@@ -79,7 +79,7 @@ public class PillBoxRecordController {
             @RequestParam(value="endDate") @DateTimeFormat(pattern = "MM/dd/yyyy") Date endDate) {
         return pillBoxRepository.findByDateBetween(startDate, endDate);
     }
-
+    //Prcoess GET request for specific PatientPillBox record.
     @RequestMapping(method=RequestMethod.GET,path="/SinglePatientRecord")
     public String getPatientRecords(@RequestParam Integer id, @RequestParam String fname, @RequestParam String lname,
                               Model model) {
@@ -92,7 +92,7 @@ public class PillBoxRecordController {
         model.addAttribute("dateFilter", new DateFilterHelper());
         return "SinglePatientRecord";    //return view name
     }
-
+    //Process POST request from Date Filter form.
     @RequestMapping(method=RequestMethod.POST,path="/SinglePatientRecord")
     public String filterPatientRecordsByDate(@ModelAttribute DateFilterHelper dateFilter, @RequestParam Integer pid,
                                              @RequestParam String name, Model model) {
@@ -101,11 +101,11 @@ public class PillBoxRecordController {
         String patientName = name;
         model.addAttribute("tableEntries", tableEntries);
         model.addAttribute("patientName", patientName);
-        model.addAttribute("user_id",dateFilter.getPid());
+        model.addAttribute("user_id", pid);
         model.addAttribute("dateFilter", new DateFilterHelper());
         return "SinglePatientRecord";    //return view name
     }
-
+    //Processes the queried list for the specific values needed in the view table.
     private List<PillBoxTableEntry> parseTableEntry(List<PillBoxRecord> list) {
         List<PillBoxTableEntry> result = new LinkedList();
         DateFormat date = new SimpleDateFormat("MM/dd/yyyy");
@@ -136,6 +136,7 @@ public class PillBoxRecordController {
         return result;
     }
 
+    //Filter the date query for a specific PID.
     private List<PillBoxRecord> filterByPid(List<PillBoxRecord> list, Integer pid) {
         List<PillBoxRecord> result = new LinkedList<PillBoxRecord>();
         for(PillBoxRecord rec: list) {

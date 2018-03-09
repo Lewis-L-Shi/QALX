@@ -23,6 +23,7 @@ public class Patient {
             mappedBy = "patient")
     private PatientInfo patientInfo;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -76,7 +77,6 @@ public class Patient {
         this.patientInfo = patientInfo;
     }
 
-    @JsonIgnore
     public Set<Doctor> getDocs() {
         return docs;
     }

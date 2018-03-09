@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <title>John Doe</title>
+    <title th:text="${patientName}"/>
     <style>
         h1 {
           font-size: 25px;
@@ -100,10 +100,15 @@
         <td th:style="${entry.statusStyle}" th:text="${entry.statusText}"></td>
     </tr>
 </table>
-<p>Filter by Date:  <input type="text" id="startDate" name="startDate"/>  to  <input type="text" id="endDate"/><button id="dateSubmit">Submit</button></p>
+<form th:action="@{/pillBoxRecord/SinglePatientRecord/(pid=${user_id},name=${patientName})}" th:object="${dateFilter}" method="post">
+    <p>Filter by Date:
+        <input type="text" th:field="*{startDate}" /> to
+        <input type="text" th:field="*{endDate}" />
+        <input type="submit" value="Submit"/></p>
+</form>
 
 <div class="buttonDiv">
-    <button class="buttons" onclick="history.go(-1);">Back to Patients</button>
+    <button class="buttons" onclick="history.go(-1);">Back</button>
 </div>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

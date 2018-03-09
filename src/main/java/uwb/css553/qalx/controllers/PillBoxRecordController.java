@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uwb.css553.qalx.models.PillBoxRecord;
 import uwb.css553.qalx.repositories.PillBoxRecordRepository;
+import uwb.css553.qalx.util.DateFilterHelper;
 import uwb.css553.qalx.util.PillBoxTableEntry;
 
 import java.text.DateFormat;
@@ -74,19 +75,34 @@ public class PillBoxRecordController {
     @RequestMapping(method=RequestMethod.GET, params={"pid", "startDate", "endDate"})
     public @ResponseBody List<PillBoxRecord> findByPidAndDateBetween(
             @RequestParam(value="pid") Integer pid,
-            @RequestParam(value="startDate") @DateTimeFormat(pattern = "EEE MMM dd HH:mm:ss z yyyy") Date startDate,
-            @RequestParam(value="endDate") @DateTimeFormat(pattern = "EEE MMM dd HH:mm:ss z yyyy") Date endDate) {
+            @RequestParam(value="startDate") @DateTimeFormat(pattern = "MM/dd/yyyy") Date startDate,
+            @RequestParam(value="endDate") @DateTimeFormat(pattern = "MM/dd/yyyy") Date endDate) {
         return pillBoxRepository.findByDateBetween(startDate, endDate);
     }
 
-    @RequestMapping(path="/SinglePatientRecord")
-    public String getPatients(@RequestParam Integer id, @RequestParam String fname, @RequestParam String lname,
+    @RequestMapping(method=RequestMethod.GET,path="/SinglePatientRecord")
+    public String getPatientRecords(@RequestParam Integer id, @RequestParam String fname, @RequestParam String lname,
                               Model model) {
         List<PillBoxRecord> list = findByPidContainsAllIgnoreCase(id);
         List<PillBoxTableEntry> tableEntries = parseTableEntry(list);
         String patientName = fname+ " " + lname;
         model.addAttribute("tableEntries", tableEntries);
         model.addAttribute("patientName", patientName);
+        model.addAttribute("user_id",list.get(0).getPid());
+        model.addAttribute("dateFilter", new DateFilterHelper());
+        return "SinglePatientRecord";    //return view name
+    }
+
+    @RequestMapping(method=RequestMethod.POST,path="/SinglePatientRecord")
+    public String filterPatientRecordsByDate(@ModelAttribute DateFilterHelper dateFilter, @RequestParam Integer pid,
+                                             @RequestParam String name, Model model) {
+        List<PillBoxRecord> list = findByPidAndDateBetween(pid,dateFilter.getStartDate(),dateFilter.getEndDate());
+        List<PillBoxTableEntry> tableEntries = parseTableEntry(filterByPid(list,pid));
+        String patientName = name;
+        model.addAttribute("tableEntries", tableEntries);
+        model.addAttribute("patientName", patientName);
+        model.addAttribute("user_id",dateFilter.getPid());
+        model.addAttribute("dateFilter", new DateFilterHelper());
         return "SinglePatientRecord";    //return view name
     }
 
@@ -116,6 +132,15 @@ public class PillBoxRecordController {
                 text = "Critical";
             }
             result.add(new PillBoxTableEntry(psid,d,t,style,text));
+        }
+        return result;
+    }
+
+    private List<PillBoxRecord> filterByPid(List<PillBoxRecord> list, Integer pid) {
+        List<PillBoxRecord> result = new LinkedList<PillBoxRecord>();
+        for(PillBoxRecord rec: list) {
+            if(rec.getPid() == pid)
+                result.add(rec);
         }
         return result;
     }
